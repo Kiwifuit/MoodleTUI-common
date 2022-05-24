@@ -24,6 +24,9 @@ class CredentialsDatabase:
     def __enter__(self):
         return self.database
 
+    def __contains__(self, key: object):
+        return key in list(self.getUsers()) if isinstance(key, str) else False
+
     @property
     def columns(self):
         return ("Username", "Password")
