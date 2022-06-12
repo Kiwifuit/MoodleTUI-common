@@ -44,9 +44,7 @@ class CredentialsDatabase:
 
     def getAll(self):
         for name, passwd in self.database.execute("SELECT Username, Password FROM creds"):
-            yield str(name), decodeUserPassword(
-                passwd
-            )  #! "str(name)" really isn't necessary, its mostly for type hinting
+            yield name, decodeUserPassword(passwd)
 
     def getUsers(self):
         yield from self.database.execute("SELECT Username FROM creds")
