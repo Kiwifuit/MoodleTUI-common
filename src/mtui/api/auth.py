@@ -7,6 +7,21 @@ from .entities import _BeautifulSoupTag
 
 
 def getLoginPage(sess: Session, page: str) -> dict:
+    """
+    Scrapes the login page and return the login form
+
+    Parameters
+    ----------
+    sess : Session
+        Session to use
+    page : str
+        _description_
+
+    Returns
+    -------
+    dict
+        Result along with misc. stats for logging
+    """
     resp = sess.get(page)
     parser = BeautifulSoup(resp.text, "html.parser")
 
@@ -20,6 +35,23 @@ def getLoginPage(sess: Session, page: str) -> dict:
 
 
 def buildPayload(html: _BeautifulSoupTag, username: str, password: str) -> dict:
+    """
+    Scrapes the login form and builds a payload
+
+    Parameters
+    ----------
+    html : _BeautifulSoupTag
+        Login form
+    username : str
+        Username to use
+    password : str
+        Password to use
+
+    Returns
+    -------
+    dict
+        Payload generated
+    """
     res = {"anchor": "", "username": username, "password": password}
 
     res.update(
@@ -32,6 +64,21 @@ def buildPayload(html: _BeautifulSoupTag, username: str, password: str) -> dict:
 
 
 def getSesskey(sess: Session, config: Namespace) -> dict:
+    """
+    Grabs the session key
+
+    Parameters
+    ----------
+    sess : Session
+        Session to use
+    config : Namespace
+        Config namespace
+
+    Returns
+    -------
+    dict
+        Session key along with misc. stats for logging
+    """
     url = config.URL.home
     resp = sess.get(url)
     parser = BeautifulSoup(resp.text, "html.parser")
@@ -46,12 +93,30 @@ def getSesskey(sess: Session, config: Namespace) -> dict:
 
 
 def login(sess: Session, user: str, passwd: str, config: Namespace):
+    """
+    Log into the website
+
+    Parameters
+    ----------
+    sess : Session
+        Session to use
+    user : str
+        Username
+    passwd : str
+        Password
+    config : Namespace
+        Config namespace
+
+    Returns
+    -------
+    dict
+        Login page along with misc. stats for logging
+    """
     url = config.URL.login
     page = getLoginPage(sess, url)
     payload = buildPayload(page.get("result"), user, passwd)
-    headers = {"User-Agent": "Mozilla/5.0"}
 
-    resp = sess.post(url, headers=headers, data=payload)
+    resp = sess.post(url, data=payload)
 
     return {
         "getLoginPage": page.get("stats"),
@@ -63,6 +128,21 @@ def login(sess: Session, user: str, passwd: str, config: Namespace):
 
 
 def logout(sess: Session, config: Namespace) -> dict:
+    """
+    Logs out of the website
+
+    Parameters
+    ----------
+    sess : Session
+        Session to use
+    config : Namespace
+        Config Namespace
+
+    Returns
+    -------
+    dict
+        Session key along with misc. stats for logging
+    """
     url = URL(config.URL.logout)
     sessionKey = getSesskey(sess, config)
     payload = Query().add(sesskey=sessionKey.get("result"))

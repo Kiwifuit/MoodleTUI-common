@@ -19,6 +19,23 @@ ID_PARSER = compile("\d{1,}$")
 
 
 def getCourse(sess: Session, course: Course, config: Namespace) -> dict:
+    """
+    Gets a course to scrape
+
+    Parameters
+    ----------
+    sess : Session
+        Session to use
+    course : Course
+        Course to scrape
+    config : Namespace
+        Config namespace
+
+    Returns
+    -------
+    dict
+        Contents of the course along with misc. stats for logging
+    """
     resp = sess.get(config.Formats.course % course.id)
     scraper = BeautifulSoup(resp.text, "html.parser")
 
@@ -31,6 +48,7 @@ def getCourse(sess: Session, course: Course, config: Namespace) -> dict:
     }
 
 
+# Why does this exist?
 def get(sess: Session, url: str, output: dict = None):
     output = output or {}
     resp = sess.get(url)
@@ -45,6 +63,19 @@ def get(sess: Session, url: str, output: dict = None):
 
 
 def determineType(url: str) -> CourseItem:
+    """
+    Determines the type of item in a course
+
+    Parameters
+    ----------
+    url : str
+        URL to guess
+
+    Returns
+    -------
+    CourseItem
+        What `url` is
+    """
     if "quiz" in url:
         return CourseItem.QUIZ
     elif "page" in url:
@@ -53,7 +84,24 @@ def determineType(url: str) -> CourseItem:
         return CourseItem.ASSIGNMENT
 
 
-def parse(sess: Session, course: Course, config: Namespace):
+def parseCourse(sess: Session, course: Course, config: Namespace) -> dict:
+    """
+    Parses a course and returns its children
+
+    Parameters
+    ----------
+    sess : Session
+        Session to use
+    course : Course
+        Course to scrape
+    config : Namespace
+        Config namespace
+
+    Returns
+    -------
+    dict
+        Course items along with misc. stats for logging
+    """
     items = getCourse(sess, course, config)
     res: _CourseContents = []
 
@@ -75,5 +123,6 @@ def parse(sess: Session, course: Course, config: Namespace):
     }
 
 
+# TODO
 def getCourses(sess: Session, config: Namespace):
     resp = sess.get(config.URL.home)

@@ -8,6 +8,10 @@ _BeautifulSoupTag: TypeAlias = Tag | NavigableString
 
 @dataclass()
 class Quiz:
+    """
+    Represents a quiz in the Moodle
+    """
+
     id: int = None
     answered: bool = False
     score: tuple[int, int] = None
@@ -15,18 +19,30 @@ class Quiz:
 
 @dataclass()
 class Lesson:
+    """
+    Represents a lesson in the Moodle
+    """
+
     id: int = None
     content: list[str] = ...
 
 
 @dataclass()
 class Resource:
+    """
+    Represents a resource in the Moodle
+    """
+
     id: int = None
     type: str = ...
 
 
 @dataclass()
 class Assignment:
+    """
+    Represents an assignment in the Moodle
+    """
+
     id: int = None
     submissionStatus: str = ...
     gradingStatus: str = ...
@@ -34,6 +50,10 @@ class Assignment:
 
 
 class CourseItem(Enum):
+    """
+    Items in the course
+    """
+
     NULL = None
     QUIZ = Quiz
     LESSON = Lesson
@@ -46,5 +66,9 @@ _CourseContents: TypeAlias = list[Quiz | Lesson | Resource | Assignment]
 
 @dataclass()
 class Course:
+    """
+    Represents a course
+    """
+
     id: int = None
     content: _CourseContents = ...
