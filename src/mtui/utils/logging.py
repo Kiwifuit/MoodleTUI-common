@@ -37,7 +37,7 @@ def strToLogLevel(level: str) -> LogLevel:
     LogLevel
         LogLevel
     """
-    match level.upper():
+    match level.upper().strip("'\" \\"):
         case "NOTSET":
             return LogLevel.NOTSET
         case "DEBUG":
