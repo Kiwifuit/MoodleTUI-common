@@ -16,5 +16,5 @@ setup(
         "Operating System :: OS Independent",
     ],
     package_dir="src",
-    license="MIT",
+    license="Apache License 2.0",
 )
