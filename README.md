@@ -10,4 +10,4 @@ I placed the project on PyPi so that...
 - Easy deployment & distribution
   - If need be, I can package my main program into a small archive and distribute *that* and tell whoever is gonna run that to execute `pip install MoodleTUI-Common`
 
-So yeah, this isn't really a package for everyone, but you can check out the code and maybe make a PR if you want to improve something
+~~So yeah, this isn't really a package for everyone, but you can check out the code and maybe make a PR if you want to improve something~~
